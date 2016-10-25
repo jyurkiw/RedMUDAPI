@@ -8,14 +8,10 @@
 function AreaRoutes() {
     var express = require('express');
     var router = express.Router();
-    var lib = require('redmudlib')(require('redis').createClient());
 
-    // test code. will remove
-    var modeler = require('../models/modeler');
+    var controller = require('../controllers/area-controller');
 
-    router.get('/area', function(req, res) {
-        res.json(modeler.area.build('KVD', 'Kobold Valley', 'A place with lots of kobolds.'));
-    });
+    router.get('/area/:areacode', controller.areaGET);
 
     return router;
 }

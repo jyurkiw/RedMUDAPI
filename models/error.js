@@ -42,6 +42,14 @@ function error() {
     /**
      * Build a blank area error object.
      * 
+     * Structure:
+     * <code><pre>
+     * {
+     *      areacode: {string},
+     *      msg: "Area {areacode} not found."
+     * }
+     * </pre></code>
+     * 
      * @memberOf error-model
      * @returns A blank area error object.
      */

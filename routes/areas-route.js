@@ -1,21 +1,18 @@
 /**
- * Area routing.
- * Area has full CRUD support.
+ * Areas routing.
+ * Areas only has a GET call.
  * 
- * @namespace area-route
- * @returns An area router.
+ * @namespace areas-route
+ * @returns An areas router.
  */
 function AreaRoutes() {
     var express = require('express');
     var router = express.Router();
-    var lib = require('redmudlib')(require('redis').createClient());
 
-    // test code. will remove
-    var modeler = require('../models/modeler');
+    var controller = require('../controllers/areas-controller');
 
-    router.get('/area', function(req, res) {
-        res.json(modeler.area.build('KVD', 'Kobold Valley', 'A place with lots of kobolds.'));
-    });
+    router
+        .get('/areas', controller.areasGET);
 
     return router;
 }
