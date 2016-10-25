@@ -1,3 +1,9 @@
+/**
+ * Area routing.
+ * Area has full CRUD support.
+ * 
+ * @returns An area router.
+ */
 function AreaRoutes() {
     var express = require('express');
     var router = express.Router();
