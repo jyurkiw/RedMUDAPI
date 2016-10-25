@@ -13,14 +13,14 @@ function areasController() {
      * @param {any} req
      * @param {any} res
      */
-    function areas(req, res) {
+    function areasGET(req, res) {
         lib.getAreas(function(area) {
             res.json(area);
         });
     }
 
     return {
-        areas: areas
+        areasGET: areasGET
     };
 }
 
