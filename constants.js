@@ -1,3 +1,8 @@
+/**
+ * API constants.
+ * 
+ * @returns An organized constants structure.
+ */
 function Constants() {
     return {
         error_messages: {

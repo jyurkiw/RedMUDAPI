@@ -1,3 +1,10 @@
+/**
+ * Model assembly function. Assembles all models into one object that has access to everything.
+ * Do this to abuse require() caching, and it give us access to every model in the
+ * application with a single call.
+ * 
+ * @returns A modeler instance.
+ */
 function Modeler() {
     var libs = [];
 
