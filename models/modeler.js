@@ -1,7 +1,8 @@
 function Modeler() {
     var libs = [];
 
-    libs.push(require('./area.js'));
+    libs.push(require('./area'));
+    libs.push(require('./error'));
 
     var models = {};
 
