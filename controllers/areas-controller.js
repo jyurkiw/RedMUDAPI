@@ -1,6 +1,7 @@
 /**
  * Areas controller.
  * 
+ * @namespace area-controller
  * @returns An area controller access object.
  */
 function areasController() {
@@ -8,7 +9,7 @@ function areasController() {
 
     /**
      * 
-     * 
+     * @memberOf area-controller
      * @param {any} req
      * @param {any} res
      */
