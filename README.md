@@ -1,2 +1,2 @@
-# NodeMudAPI
-A REST API frontend to expose the NodeMudServer to client applications.
+# RedMUDAPI
+A REST API frontend to expose the RedMUD backend to client applications.
