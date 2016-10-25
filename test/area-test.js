@@ -8,6 +8,7 @@ var client = require('redis').createClient();
 var lib = require('redmudlib')(client);
 
 var modeler = require('../models/modeler');
+var constants = require('../constants');
 
 var server = require('../server');
 
@@ -25,7 +26,7 @@ var goblinValleyArea = {
     size: 0
 };
 
-var errorObj404 = modeler.error.area.build('XXX');
+var errorObj404 = modeler.status.build(constants.status.ERROR, 'XXX', constants.error_messages.AREA_404, 'XXX');
 
 describe('Area API', function() {
     describe('GET Areas', function() {
@@ -67,7 +68,7 @@ describe('Area API', function() {
 
         it('check a bogus area', function(done) {
             chai.request(server)
-                .get('/api/area/' + errorObj404.areacode)
+                .get('/api/area/' + errorObj404.info)
                 .end(function(err, res) {
                     res.should.have.status(404);
                     res.body.should.be.a('object');
@@ -78,6 +79,53 @@ describe('Area API', function() {
     });
 
     describe('POST Area', function() {
+        beforeEach(function(done) {
+            client.flushall();
+            done();
+        });
 
+        it('check fully formed kobold valley', function(done) {
+            chai.request(server)
+                .post('/api/area')
+                .send(koboldValleyArea)
+                .end(function(err, res) {
+                    res.should.have.status(200);
+                    done();
+                });
+        });
+
+        it('check kobold valley missing description', function(done) {
+            var noDescKBV = modeler.status.build(constants.status.WARN, koboldValleyArea.areacode, constants.error_messages.AREA_POST_NO_DESC);
+
+            chai.request(server)
+                .post('/api/area')
+                .send(noDescKBV)
+                .end(function(err, res) {
+                    res.should.have.status(200);
+
+                    chai.request(server)
+                        .get('/api/area/' + koboldValleyArea.areacode)
+                        .end(function(err, res) {
+                            res.should.have.status(200);
+                            res.body.should.be.a('object');
+                            expect(res.body).to.deep.equal(noDescKBV);
+                            done();
+                        });
+                });
+        });
+
+        it('check kobold valley missing name', function(done) {
+            var errorKBV = modeler.status.build(constants.status.ERROR, koboldValleyArea.areacode, constants.error_messages.AREA_POST_500);
+
+            chai.request(server)
+                .post('/api/area')
+                .send(koboldValleyArea)
+                .end(function(err, res) {
+                    res.should.have.status(500);
+                    res.body.should.be.a('object');
+                    expect(res.body).to.deep.equal(erroKBV);
+                    done();
+                });
+        });
     });
 });

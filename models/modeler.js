@@ -10,7 +10,7 @@ function Modeler() {
     var libs = [];
 
     libs.push(require('./area'));
-    libs.push(require('./error'));
+    libs.push(require('./status'));
 
     var models = {};
 
