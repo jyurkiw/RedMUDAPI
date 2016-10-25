@@ -46,37 +46,37 @@ describe('Area API', function() {
                 });
         });
     });
-    /*
-        describe('GET/PUT/DELETE Area', function() {
-            beforeEach(function(done) {
-                client.flushall();
-                lib.setArea(koboldValleyArea.areacode, koboldValleyArea);
-                done();
-            });
 
-            it('check the kobold valley', function(done) {
-                chai.request(server)
-                    .get('/api/area/' + koboldValleyArea.areacode)
-                    .end(function(err, res) {
-                        res.should.have.status(200);
-                        res.body.should.be.a('object');
-                        expect(res.body).to.deep.equal(koboldValleyArea);
-                        done();
-                    });
-            });
-
-            it('check a bogus area', function(done) {
-                chai.request(server)
-                    .get('/api/area/' + errorObj404.areacode)
-                    .end(function(err, res) {
-                        res.should.have.status(404);
-                        res.body.should.be.a('object');
-                        expect(res.body).to.deep.equal(errorObj404);
-                        done();
-                    });
-            });
+    describe('GET/PUT/DELETE Area', function() {
+        beforeEach(function(done) {
+            client.flushall();
+            lib.setArea(koboldValleyArea.areacode, koboldValleyArea);
+            done();
         });
-    */
+
+        it('check the kobold valley', function(done) {
+            chai.request(server)
+                .get('/api/area/' + koboldValleyArea.areacode)
+                .end(function(err, res) {
+                    res.should.have.status(200);
+                    res.body.should.be.a('object');
+                    expect(res.body).to.deep.equal(koboldValleyArea);
+                    done();
+                });
+        });
+
+        it('check a bogus area', function(done) {
+            chai.request(server)
+                .get('/api/area/' + errorObj404.areacode)
+                .end(function(err, res) {
+                    res.should.have.status(404);
+                    res.body.should.be.a('object');
+                    expect(res.body).to.deep.equal(errorObj404);
+                    done();
+                });
+        });
+    });
+
     describe('POST Area', function() {
 
     });

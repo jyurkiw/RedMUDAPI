@@ -1,15 +1,15 @@
 /**
  * Areas controller.
  * 
- * @namespace area-controller
- * @returns An area controller access object.
+ * @namespace areas-controller
+ * @returns An areas controller access object.
  */
 function areasController() {
     var lib = require('redmudlib')(require('redis').createClient());
 
     /**
      * 
-     * @memberOf area-controller
+     * @memberOf areas-controller
      * @param {any} req
      * @param {any} res
      */
