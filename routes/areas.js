@@ -6,9 +6,13 @@ function AreaRoutes() {
     // test code. will remove
     var modeler = require('../models/modeler');
 
-    router.get('/area', function(req, res) {
-        res.json(modeler.area.build('KVD', 'Kobold Valley', 'A place with lots of kobolds.'));
-    });
+    router
+        .get('/areas', function(req, res) {
+            //res.json(modeler.area.build('KVD', 'Kobold Valley', 'A place with lots of kobolds.'));
+            lib.getAreas(function(area) {
+                res.json(area);
+            });
+        });
 
     return router;
 }

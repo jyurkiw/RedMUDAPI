@@ -1,7 +1,7 @@
 var chai = require('chai');
 chai.use(require('chai-http'));
 var expect = chai.expect;
-var should = chai.should;
+var should = chai.should();
 var assert = require('assert');
 
 var lib = require('redmudlib')(require('redis').createClient());
@@ -32,7 +32,7 @@ describe('Area API', function() {
             done();
         });
 
-        it('check against the Kobold Valley', function(done) {
+        it('check areas', function(done) {
             chai.request(server)
                 .get('/api/areas')
                 .end(function(err, res) {
