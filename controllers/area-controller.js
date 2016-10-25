@@ -7,6 +7,7 @@
 function areasController() {
     var lib = require('redmudlib')(require('redis').createClient());
     var modeler = require('../models/modeler');
+    var constants = require('../constants');
 
     /**
      * GET method for area.
@@ -24,7 +25,7 @@ function areasController() {
                 res.json(area);
             } else {
                 res.status(404);
-                res.json(modeler.error.area.build(req.params.areacode));
+                res.json(modeler.status.build(constants.status.ERROR, req.params.areacode, constants.error_messages.AREA_404, req.params.areacode));
             }
         });
     }
