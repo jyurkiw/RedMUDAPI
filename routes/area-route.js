@@ -2,6 +2,7 @@
  * Area routing.
  * Area has full CRUD support.
  * 
+ * @namespace area-route
  * @returns An area router.
  */
 function AreaRoutes() {

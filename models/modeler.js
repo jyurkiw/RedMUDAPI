@@ -3,6 +3,7 @@
  * Do this to abuse require() caching, and it give us access to every model in the
  * application with a single call.
  * 
+ * @namespace modeler
  * @returns A modeler instance.
  */
 function Modeler() {

@@ -1,6 +1,7 @@
 /**
  * Error model builder class.
  * 
+ * @namespace error-model
  * @returns An error builder access object.
  */
 function error() {
@@ -10,6 +11,7 @@ function error() {
     /**
      * Build a blank error object.
      * 
+     * @memberOf error-model
      * @returns A blank error.
      */
     function blank() {
@@ -23,6 +25,7 @@ function error() {
      * Populate a blank error object with the provided data.
      * Empty strings should be set to null and not an empty string.
      * 
+     * @memberOf error-model
      * @param {string} errorcode
      * @param {string} name
      * @param {string} description
@@ -39,6 +42,7 @@ function error() {
     /**
      * Build a blank area error object.
      * 
+     * @memberOf error-model
      * @returns A blank area error object.
      */
     function blankAreaError() {
@@ -51,6 +55,7 @@ function error() {
     /**
      * Build an area error object.
      * 
+     * @memberOf error-model
      * @param {string} areacode The erroring area code.
      * @returns A populated area error object.
      */
