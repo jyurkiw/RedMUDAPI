@@ -18,8 +18,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.text());
 app.use(bodyParser.json({ type: 'application/json' }));
 
-app.use(apiPreface, require('./routes/area'));
-app.use(apiPreface, require('./routes/areas'));
+app.use(apiPreface, require('./routes/area-route'));
+app.use(apiPreface, require('./routes/areas-route'));
 
 app.listen(port);
 console.log('server running...');
