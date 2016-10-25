@@ -36,6 +36,11 @@ function error() {
         return error;
     }
 
+    /**
+     * Build a blank area error object.
+     * 
+     * @returns A blank area error object.
+     */
     function blankAreaError() {
         return {
             areacode: null,
@@ -43,6 +48,12 @@ function error() {
         };
     }
 
+    /**
+     * Build an area error object.
+     * 
+     * @param {string} areacode The erroring area code.
+     * @returns A populated area error object.
+     */
     function buildAreaError(areacode) {
         var error = blankAreaError();
         error.areacode = areacode;
