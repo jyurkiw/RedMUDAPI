@@ -1,6 +1,7 @@
 function AreaRoutes() {
     var express = require('express');
     var router = express.Router();
+    var lib = require('redmudlib')(require('redis').createClient());
 
     // test code. will remove
     var modeler = require('../models/modeler');
