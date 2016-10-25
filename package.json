@@ -1,28 +1,29 @@
 {
-    "name": "redmudapi",
-    "version": "0.0.1",
-    "description": "An API to expose the RedMUD through HTTP REST.",
-    "main": "server.js",
-    "scripts": {
-        "start": "node server.js",
-        "test": "./node_modules/.bin/mocha --timeout 10000 --reporter spec",
-        "testc": "./node_modules/.bin/istanbul cover ./node_modules/mocha/bin/_mocha"
-    },
-    "author": "Jeffrey Yurkiw",
-    "license": "MIT",
-    "dependencies": {
-        "body-parser": "^1.15.2",
-        "debug": "~2.2.0",
-        "express": "^4.14.0",
-        "morgan": "~1.7.0",
-        "redis": "^2.6.2",
-        "redmudlib": "git+https://github.com/jyurkiw/RedMUDLib.git"
-    },
-    "devDependencies": {
-        "chai": "^3.5.0",
-        "chai-http": "^3.0.0",
-        "istanbul": "^0.4.5",
-        "jshint": "^2.9.4",
-        "mocha": "^3.1.2"
-    }
+  "name": "redmudapi",
+  "version": "0.0.1",
+  "description": "An API to expose the RedMUD through HTTP REST.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "./node_modules/.bin/mocha --timeout 10000 --reporter spec",
+    "testc": "./node_modules/.bin/istanbul cover ./node_modules/mocha/bin/_mocha"
+  },
+  "author": "Jeffrey Yurkiw",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "debug": "~2.2.0",
+    "express": "^4.14.0",
+    "morgan": "~1.7.0",
+    "redis": "^2.6.2",
+    "redmudlib": "git+https://github.com/jyurkiw/RedMUDLib.git",
+    "util": "^0.10.3"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "chai-http": "^3.0.0",
+    "istanbul": "^0.4.5",
+    "jshint": "^2.9.4",
+    "mocha": "^3.1.2"
+  }
 }
