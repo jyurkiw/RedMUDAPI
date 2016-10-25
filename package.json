@@ -1,16 +1,23 @@
 {
-  "name": "nodemudapi",
-  "version": "0.0.1",
-  "description": "An API to expose the NodeMudServer to HTTP.",
-  "main": "api.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "Jeffrey Yurkiw",
-  "license": "MIT",
-  "dependencies": {
-    "body-parser": "^1.15.2",
-    "express": "^4.14.0",
-    "nodemudserver": "git+https://github.com/jyurkiw/NodeMudServer.git"
-  }
+    "name": "redmudapi",
+    "version": "0.0.1",
+    "description": "An API to expose the RedMUD through HTTP REST.",
+    "main": "server.js",
+    "scripts": {
+        "test": "./node_modules/.bin/mocha --reporter spec",
+        "testc": "./node_modules/.bin/istanbul cover ./node_modules/mocha/bin/_mocha"
+    },
+    "author": "Jeffrey Yurkiw",
+    "license": "MIT",
+    "dependencies": {
+        "body-parser": "^1.15.2",
+        "express": "^4.14.0",
+        "redmudlib": "git+https://github.com/jyurkiw/RedMUDLib.git"
+    },
+    "devDependencies": {
+        "chai": "^3.5.0",
+        "istanbul": "^0.4.5",
+        "jshint": "^2.9.4",
+        "mocha": "^3.1.2"
+    }
 }
