@@ -13,6 +13,7 @@ function AreaRoutes() {
 
     router.get('/area/:areacode', controller.areaGET);
     router.post('/area', controller.areaPOST);
+    router.put('/area', controller.areaPUT);
 
     return router;
 }

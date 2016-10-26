@@ -153,6 +153,7 @@ describe('Area API', function() {
 
         it('check successful update to kobold valley', function(done) {
             var gobArea = modeler.area.build(koboldValleyArea.areacode, goblinValleyArea.name, goblinValleyArea.description);
+            delete gobArea.size;
 
             chai.request(server)
                 .put('/api/area')
@@ -161,6 +162,8 @@ describe('Area API', function() {
                     res.should.have.status(200);
                     res.body.should.be.a('object');
                     expect(res.body).to.deep.equal(modeler.status.ok(koboldValleyArea.areacode));
+
+                    gobArea.size = goblinValleyArea.size;
                     chai.request(server)
                         .get('/api/area/' + koboldValleyArea.areacode)
                         .end(function(err, res) {
@@ -174,6 +177,7 @@ describe('Area API', function() {
 
         it('check successful partial update to kobold valley', function(done) {
             var gobArea = modeler.area.build(koboldValleyArea.areacode, goblinValleyArea.name, goblinValleyArea.description);
+            delete gobArea.size;
 
             chai.request(server)
                 .put('/api/area')
@@ -182,6 +186,8 @@ describe('Area API', function() {
                     res.should.have.status(200);
                     res.body.should.be.a('object');
                     expect(res.body).to.deep.equal(modeler.status.ok(koboldValleyArea.areacode));
+
+                    gobArea.size = goblinValleyArea.size;
                     chai.request(server)
                         .get('/api/area/' + koboldValleyArea.areacode)
                         .end(function(err, res) {
@@ -195,6 +201,7 @@ describe('Area API', function() {
 
         it('check for update fail with non-existent areacode', function(done) {
             var gobArea = modeler.area.build('XXX', goblinValleyArea.name, goblinValleyArea.description);
+            delete gobArea.size;
 
             chai.request(server)
                 .put('/api/area')
@@ -203,11 +210,13 @@ describe('Area API', function() {
                     res.should.have.status(500);
                     res.body.should.be.a('object');
                     expect(res.body).to.deep.equal(modeler.status.build(constants.status.ERROR, gobArea.areacode, constants.error_messages.AREA_404, gobArea.areacode));
+                    done();
                 });
         });
 
         it('check for update fail with missing areacode', function(done) {
             var gobArea = modeler.area.build(null, goblinValleyArea.name, goblinValleyArea.description);
+            delete gobArea.size;
 
             chai.request(server)
                 .put('/api/area')
@@ -215,12 +224,13 @@ describe('Area API', function() {
                 .end(function(err, res) {
                     res.should.have.status(500);
                     res.body.should.be.a('object');
-                    expect(res.body).to.deep.equal(modeler.status.build(constants.status.ERROR, gobArea.areacode, constants.error_messages.AREA_404_NO_AREACODE));
+                    expect(res.body).to.deep.equal(modeler.status.build(constants.status.ERROR, 'areacode', constants.error_messages.AREA_404_NO_AREACODE));
+                    done();
                 });
         });
 
         it('check to make sure that size cannot be updated', function(done) {
-            var gobArea = modeler.area.build(null, goblinValleyArea.name, goblinValleyArea.description);
+            var gobArea = modeler.area.build(koboldValleyArea.areacode, goblinValleyArea.name, goblinValleyArea.description);
             gobArea.size = 5;
 
             chai.request(server)
@@ -230,6 +240,7 @@ describe('Area API', function() {
                     res.should.have.status(500);
                     res.body.should.be.a('object');
                     expect(res.body).to.deep.equal(modeler.status.build(constants.status.ERROR, gobArea.areacode, constants.error_messages.AREA_PUT_500_SIZE));
+                    done();
                 });
         });
     });
