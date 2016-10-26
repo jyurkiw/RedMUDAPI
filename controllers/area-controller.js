@@ -66,9 +66,45 @@ function areasController() {
         }
     }
 
+    /**
+     * PUT method for area.
+     * Returns a status object. See {@link statis-model}
+     * 
+     * @memberOf area-controller
+     * @param {any} req
+     * @param {any} res
+     */
+    function areaPUT(req, res) {
+        var areaUpdate = req.body;
+
+        // Make sure areacode exists at all
+        if (areaUpdate === null || typeof(areaUpdate) !== 'object' || areaUpdate.areacode === null || typeof(areaUpdate.areacode) !== 'string') {
+            res.status(500);
+            res.json(modeler.status.build(constants.status.ERROR, 'areacode', constants.error_messages.AREA_404_NO_AREACODE));
+        } else if (typeof(areaUpdate.size) !== 'undefined') {
+            res.status(500);
+            res.json(modeler.status.build(constants.status.ERROR, areaUpdate.areacode, constants.error_messages.AREA_PUT_500_SIZE));
+        } else {
+            // Check for areacode validity
+            lib.areaExists(areaUpdate.areacode, function(exists) {
+                if (exists) {
+                    // Update the area
+                    lib.setArea(areaUpdate.areacode, areaUpdate);
+
+                    res.json(modeler.status.ok(areaUpdate.areacode));
+                } else {
+                    res.status(500);
+                    res.json(modeler.status.build(constants.status.ERROR, areaUpdate.areacode, constants.error_messages.AREA_404, areaUpdate.areacode));
+                }
+            });
+        }
+
+    }
+
     return {
         areaGET: areaGET,
-        areaPOST: areaPOST
+        areaPOST: areaPOST,
+        areaPUT: areaPUT
     };
 }
 
