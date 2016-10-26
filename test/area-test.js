@@ -129,5 +129,19 @@ describe('Area API', function() {
                     done();
                 });
         });
+
+        if ('check kobold valley missing areacode', function(done) {
+                var errorKBV = modeler.status.build(constants.status.ERROR, 'areacode', constants.error_messages.AREA_POST_500);
+
+                chai.request(server)
+                    .post('/api/area')
+                    .send(modeler.area.build(null, koboldValleyArea.name, koboldValleyArea.description))
+                    .end(function(err, res) {
+                        res.should.have.status(500);
+                        res.body.should.be.a('object');
+                        expect(res.body).to.deep.equal(errorKBV);
+                        done();
+                    });
+            });
     });
 });
