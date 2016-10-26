@@ -12,6 +12,7 @@ function AreaRoutes() {
     var controller = require('../controllers/area-controller');
 
     router.get('/area/:areacode', controller.areaGET);
+    router.post('/area', controller.areaPOST);
 
     return router;
 }

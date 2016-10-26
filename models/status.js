@@ -9,9 +9,17 @@ function nonDataStatusResponse() {
     var constants = require('../constants');
 
     /**
+     * Build a blank status object.
+     * <pre><code>
+     * {
+     *      status: null,
+     *      info: null,
+     *      msg: null
+     * }
+     * </code></pre>
      * 
-     * 
-     * @returns
+     * @memberOf status-model
+     * @returns A blank status object.
      */
     function blank() {
         return {
@@ -22,12 +30,20 @@ function nonDataStatusResponse() {
     }
 
     /**
+     * Build a populated status object.
+     * <pre><code>
+     * {
+     *      status: {status},
+     *      info: {info},
+     *      msg: {msg}
+     * }
+     * </code></pre>
      * 
-     * 
-     * @param {any} status
-     * @param {any} info
-     * @param {any} msg
-     * @returns
+     * @memberOf status-model
+     * @param {any} status The status to set (err|warn|ok)
+     * @param {any} info Relevant status info.
+     * @param {any} msg A short status message.
+     * @returns A status object.
      */
     function build(status, info, msg) {
         var st = blank();
@@ -43,10 +59,29 @@ function nonDataStatusResponse() {
         return st;
     }
 
+    /**
+     * Build a default OK status object.
+     * 
+     * @memberOf status-model
+     * @param {any} info Relevant information (optional).
+     * @returns A default OK status object.
+     */
+    function ok(info) {
+        var st = blank();
+        st.status = constants.status.OK;
+
+        if (info !== null) {
+            st.info = info;
+        }
+
+        return st;
+    }
+
     return {
         status: {
             blank: blank,
-            build: build
+            build: build,
+            ok: ok
         }
     };
 }

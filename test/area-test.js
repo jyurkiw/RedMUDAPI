@@ -95,7 +95,8 @@ describe('Area API', function() {
         });
 
         it('check kobold valley missing description', function(done) {
-            var noDescKBV = modeler.status.build(constants.status.WARN, koboldValleyArea.areacode, constants.error_messages.AREA_POST_NO_DESC);
+            var noDescKBV = modeler.area.build(koboldValleyArea.areacode, koboldValleyArea.name, null);
+            var noDescKBVWarn = modeler.status.build(constants.status.WARN, koboldValleyArea.areacode, constants.warning_messages.AREA_POST_NO_DESC);
 
             chai.request(server)
                 .post('/api/area')
@@ -103,6 +104,7 @@ describe('Area API', function() {
                 .end(function(err, res) {
                     res.should.have.status(200);
 
+                    expect(res.body).to.deep.equal(noDescKBVWarn);
                     chai.request(server)
                         .get('/api/area/' + koboldValleyArea.areacode)
                         .end(function(err, res) {
@@ -119,11 +121,11 @@ describe('Area API', function() {
 
             chai.request(server)
                 .post('/api/area')
-                .send(koboldValleyArea)
+                .send(modeler.area.build(koboldValleyArea.areacode, null, koboldValleyArea.description))
                 .end(function(err, res) {
                     res.should.have.status(500);
                     res.body.should.be.a('object');
-                    expect(res.body).to.deep.equal(erroKBV);
+                    expect(res.body).to.deep.equal(errorKBV);
                     done();
                 });
         });
