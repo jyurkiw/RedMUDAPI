@@ -15,7 +15,7 @@ function areasController() {
      */
     function areasGET(req, res) {
         lib.getAreas(function(area) {
-            res.json(area);
+            res.json(area.sort());
         });
     }
 
