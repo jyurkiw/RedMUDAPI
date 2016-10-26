@@ -12,11 +12,10 @@ function Constants() {
         },
         error_messages: {
             AREA_404: "Area %s not found.",
-            AREA_POST_500: "Areacode and name are required.",
-            AREA_POST_NO_DESC: "Area description not found."
+            AREA_POST_500: "Areacode and name are required."
         },
         warning_messages: {
-
+            AREA_POST_NO_DESC: "Area description not found."
         }
     };
 }
