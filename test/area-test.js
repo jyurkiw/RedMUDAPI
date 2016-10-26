@@ -130,18 +130,107 @@ describe('Area API', function() {
                 });
         });
 
-        if ('check kobold valley missing areacode', function(done) {
-                var errorKBV = modeler.status.build(constants.status.ERROR, 'areacode', constants.error_messages.AREA_POST_500);
+        it('check kobold valley missing areacode', function(done) {
+            var errorKBV = modeler.status.build(constants.status.ERROR, 'areacode', constants.error_messages.AREA_POST_500);
 
-                chai.request(server)
-                    .post('/api/area')
-                    .send(modeler.area.build(null, koboldValleyArea.name, koboldValleyArea.description))
-                    .end(function(err, res) {
-                        res.should.have.status(500);
-                        res.body.should.be.a('object');
-                        expect(res.body).to.deep.equal(errorKBV);
-                        done();
-                    });
-            });
+            chai.request(server)
+                .post('/api/area')
+                .send(modeler.area.build(null, koboldValleyArea.name, koboldValleyArea.description))
+                .end(function(err, res) {
+                    res.should.have.status(500);
+                    res.body.should.be.a('object');
+                    expect(res.body).to.deep.equal(errorKBV);
+                    done();
+                });
+        });
+    });
+
+    describe('PUT Area', function() {
+        before(function(done) {
+            lib.setArea(koboldValleyArea.areacode, koboldValleyArea);
+            done();
+        });
+
+        it('check successful update to kobold valley', function(done) {
+            var gobArea = modeler.area.build(koboldValleyArea.areacode, goblinValleyArea.name, goblinValleyArea.description);
+
+            chai.request(server)
+                .put('/api/area')
+                .send(gobArea)
+                .end(function(err, res) {
+                    res.should.have.status(200);
+                    res.body.should.be.a('object');
+                    expect(res.body).to.deep.equal(modeler.status.ok(koboldValleyArea.areacode));
+                    chai.request(server)
+                        .get('/api/area/' + koboldValleyArea.areacode)
+                        .end(function(err, res) {
+                            res.should.have.status(200);
+                            res.body.should.be.a('object');
+                            expect(res.body).to.deep.equal(gobArea);
+                            done();
+                        });
+                });
+        });
+
+        it('check successful partial update to kobold valley', function(done) {
+            var gobArea = modeler.area.build(koboldValleyArea.areacode, goblinValleyArea.name, goblinValleyArea.description);
+
+            chai.request(server)
+                .put('/api/area')
+                .send(gobArea)
+                .end(function(err, res) {
+                    res.should.have.status(200);
+                    res.body.should.be.a('object');
+                    expect(res.body).to.deep.equal(modeler.status.ok(koboldValleyArea.areacode));
+                    chai.request(server)
+                        .get('/api/area/' + koboldValleyArea.areacode)
+                        .end(function(err, res) {
+                            res.should.have.status(200);
+                            res.body.should.be.a('object');
+                            expect(res.body).to.deep.equal(gobArea);
+                            done();
+                        });
+                });
+        });
+
+        it('check for update fail with non-existent areacode', function(done) {
+            var gobArea = modeler.area.build('XXX', goblinValleyArea.name, goblinValleyArea.description);
+
+            chai.request(server)
+                .put('/api/area')
+                .send(gobArea)
+                .end(function(err, res) {
+                    res.should.have.status(500);
+                    res.body.should.be.a('object');
+                    expect(res.body).to.deep.equal(modeler.status.build(constants.status.ERROR, gobArea.areacode, constants.error_messages.AREA_404, gobArea.areacode));
+                });
+        });
+
+        it('check for update fail with missing areacode', function(done) {
+            var gobArea = modeler.area.build(null, goblinValleyArea.name, goblinValleyArea.description);
+
+            chai.request(server)
+                .put('/api/area')
+                .send(gobArea)
+                .end(function(err, res) {
+                    res.should.have.status(500);
+                    res.body.should.be.a('object');
+                    expect(res.body).to.deep.equal(modeler.status.build(constants.status.ERROR, gobArea.areacode, constants.error_messages.AREA_404_NO_AREACODE));
+                });
+        });
+
+        it('check to make sure that size cannot be updated', function(done) {
+            var gobArea = modeler.area.build(null, goblinValleyArea.name, goblinValleyArea.description);
+            gobArea.size = 5;
+
+            chai.request(server)
+                .put('/api/area')
+                .send(gobArea)
+                .end(function(err, res) {
+                    res.should.have.status(500);
+                    res.body.should.be.a('object');
+                    expect(res.body).to.deep.equal(modeler.status.build(constants.status.ERROR, gobArea.areacode, constants.error_messages.AREA_PUT_500_SIZE));
+                });
+        });
     });
 });
