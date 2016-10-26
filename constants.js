@@ -13,8 +13,12 @@ function Constants() {
         error_messages: {
             AREA_404: "Area %s not found.",
             AREA_404_NO_AREACODE: "Areacode is required.",
+
             AREA_POST_500: "Areacode and name are required.",
-            AREA_PUT_500_SIZE: "Size cannot be set in this fashion."
+            AREA_PUT_500_SIZE: "Size cannot be set in this fashion.",
+
+            AREA_DELETE_500_SIZE: "Area %s cannot be deleted while room count > 0.",
+            AREA_DELETE_500_BAD_AREACODE: "Area %s does not exist."
         },
         warning_messages: {
             AREA_POST_NO_DESC: "Area description not found."

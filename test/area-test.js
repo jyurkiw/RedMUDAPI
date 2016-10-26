@@ -36,6 +36,11 @@ describe('Area API', function() {
             done();
         });
 
+        after(function(done) {
+            client.flushall();
+            done();
+        });
+
         it('check areas', function(done) {
             chai.request(server)
                 .get('/api/areas')
@@ -52,6 +57,11 @@ describe('Area API', function() {
         beforeEach(function(done) {
             client.flushall();
             lib.setArea(koboldValleyArea.areacode, koboldValleyArea);
+            done();
+        });
+
+        after(function(done) {
+            client.flushall();
             done();
         });
 
@@ -80,6 +90,11 @@ describe('Area API', function() {
 
     describe('POST Area', function() {
         beforeEach(function(done) {
+            client.flushall();
+            done();
+        });
+
+        after(function(done) {
             client.flushall();
             done();
         });
@@ -146,8 +161,13 @@ describe('Area API', function() {
     });
 
     describe('PUT Area', function() {
-        before(function(done) {
+        beforeEach(function(done) {
             lib.setArea(koboldValleyArea.areacode, koboldValleyArea);
+            done();
+        });
+
+        after(function(done) {
+            client.flushall();
             done();
         });
 
@@ -240,6 +260,51 @@ describe('Area API', function() {
                     res.should.have.status(500);
                     res.body.should.be.a('object');
                     expect(res.body).to.deep.equal(modeler.status.build(constants.status.ERROR, gobArea.areacode, constants.error_messages.AREA_PUT_500_SIZE));
+                    done();
+                });
+        });
+    });
+
+    describe('DELETE area', function() {
+        beforeEach(function(done) {
+            lib.setArea(koboldValleyArea.areacode, koboldValleyArea);
+            done();
+        });
+
+        after(function(done) {
+            client.flushall();
+            done();
+        });
+
+        it('check successful delete', function(done) {
+            chai.request(server)
+                .del('/api/delete/' + koboldValleyArea.areacode)
+                .end(function(err, res) {
+                    res.should.have.status(500);
+                    res.body.should.be.a('object');
+                    expect(res.body).to.deep.equal(modeler.status.ok(koboldValleyArea.areacode));
+                    done();
+                });
+        });
+
+        it('check fail delete for area size > 0', function(done) {
+            chai.request(server)
+                .del('/api/delete/' + koboldValleyArea.areacode)
+                .end(function(err, res) {
+                    res.should.have.status(500);
+                    res.body.should.be.a('object');
+                    expect(res.body).to.deep.equal(modeler.status.build(constants.status.ERROR, koboldValleyArea.areacode, constants.error_messages.AREA_DELETE_500_SIZE));
+                    done();
+                });
+        });
+
+        it('check fail delete for non-exist areacode', function(done) {
+            chai.request(server)
+                .del('/api/delete/' + koboldValleyArea.areacode)
+                .end(function(err, res) {
+                    res.should.have.status(500);
+                    res.body.should.be.a('object');
+                    expect(res.body).to.deep.equal(modeler.status.build(constants.status.ERROR, koboldValleyArea.areacode, constants.error_messages.AREA_DELETE_500_BAD_AREACODE));
                     done();
                 });
         });
