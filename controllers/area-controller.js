@@ -22,7 +22,8 @@ function areasController() {
     function areaGET(req, res) {
         lib.getArea(req.params.areacode, function(area) {
             if (area !== null) {
-                res.json(Object.assign(modeler.area.blank(), area));
+                var defaultedArea = Object.assign(modeler.area.blank(), area);
+                res.json(defaultedArea);
             } else {
                 res.status(404);
                 res.json(modeler.status.build(constants.status.ERROR, req.params.areacode, constants.error_messages.AREA_404, req.params.areacode));
@@ -98,13 +99,30 @@ function areasController() {
                 }
             });
         }
+    }
 
+    function areaDELETE(req, res) {
+        lib.getArea(req.params.areacode, function(area) {
+            if (area !== null) {
+                if (area.size > 0) {
+                    res.status(500);
+                    res.json(modeler.status.build(constants.status.ERROR, area.areacode, constants.error_messages.AREA_DELETE_500_SIZE));
+                } else {
+                    lib.deleteArea(area.areacode);
+                    res.json(modeler.status.ok(area.areacode));
+                }
+            } else {
+                res.status(500);
+                res.json(modeler.status.build(constants.status.ERROR, req.params.areacode, constants.error_messages.AREA_DELETE_500_BAD_AREACODE));
+            }
+        });
     }
 
     return {
         areaGET: areaGET,
         areaPOST: areaPOST,
-        areaPUT: areaPUT
+        areaPUT: areaPUT,
+        areaDELETE: areaDELETE
     };
 }
 
