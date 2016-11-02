@@ -23,6 +23,12 @@ function areasController() {
         lib.getArea(req.params.areacode, function(area) {
             if (area !== null) {
                 var defaultedArea = Object.assign(modeler.area.blank(), area);
+
+                // Check for invalid size values
+                if (typeof(defaultedArea.size) !== 'number' || isNaN(defaultedArea.size)) {
+                    defaultedArea.size = 0;
+                }
+
                 res.json(defaultedArea);
             } else {
                 res.status(404);
