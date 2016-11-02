@@ -158,6 +158,31 @@ describe('Area API', function() {
                     done();
                 });
         });
+
+        it('check kobold valley missing size', function(done) {
+            var noSizeKbv = Object.assign({}, koboldValleyArea);
+            delete noSizeKbv.size;
+
+            chai.request(server)
+                .post('/api/area')
+                .send(noSizeKbv)
+                .end(function(err, res) {
+                    res.should.have.status(200);
+
+                    chai.request(server)
+                        .get('/api/area/' + noSizeKbv.areacode)
+                        .end(function(gerr, gres) {
+                            console.log(gres.body);
+                            gres.should.have.status(200);
+                            gres.body.should.be.a('object');
+                            should.exist(gres.body.size);
+                            gres.body.size.should.be.a('number');
+                            expect(gres.body.size).to.equal(0);
+
+                            done();
+                        });
+                });
+        });
     });
 
     describe('PUT Area', function() {

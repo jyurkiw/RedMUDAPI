@@ -11,7 +11,7 @@ var apiPreface = '/api';
 var modeler = require('./models/modeler');
 
 // Configure the application
-app.use(morgan('combined'));
+//app.use(morgan('combined'));
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
