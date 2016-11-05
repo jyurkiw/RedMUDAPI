@@ -14,9 +14,10 @@ function areasController() {
      * @param {any} res
      */
     function areasGET(req, res) {
-        lib.getAreas(function(area) {
-            res.json(area.sort());
-        });
+        lib.area.async.getAreas()
+            .then(function(area) {
+                res.json(area.sort());
+            });
     }
 
     return {

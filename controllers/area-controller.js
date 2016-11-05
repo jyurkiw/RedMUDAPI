@@ -20,7 +20,7 @@ function areasController() {
      * @param {any} res The response object.
      */
     function areaGET(req, res) {
-        lib.getArea(req.params.areacode, function(area) {
+        lib.area.getArea(req.params.areacode, function(area) {
             if (area !== null) {
                 var defaultedArea = Object.assign(modeler.area.blank(), area);
 
@@ -68,8 +68,16 @@ function areasController() {
                 response = modeler.status.ok(newArea.areacode);
             }
 
-            lib.setArea(newArea.areacode, newArea);
-            res.json(response);
+            lib.area.async.createArea(newArea.areacode, newArea)
+                .then(function(success) {
+                    if (success) {
+                        res.json(response);
+                    } else {
+                        response = modeler.status.build(constants.status.ERROR, newArea.areacode, constants.warning_messages.AREA_CREATE_FAIL_UNKNOWN);
+                        res.json(response);
+                    }
+                });
+
         }
     }
 
@@ -92,36 +100,35 @@ function areasController() {
             res.status(500);
             res.json(modeler.status.build(constants.status.ERROR, areaUpdate.areacode, constants.error_messages.AREA_PUT_500_SIZE));
         } else {
-            // Check for areacode validity
-            lib.areaExists(areaUpdate.areacode, function(exists) {
-                if (exists) {
+            lib.area.async.setArea(areaUpdate.areacode, areaUpdate)
+                .then(function() {
                     // Update the area
-                    lib.setArea(areaUpdate.areacode, areaUpdate);
-
+                    lib.area.setArea(areaUpdate.areacode, areaUpdate);
                     res.json(modeler.status.ok(areaUpdate.areacode));
-                } else {
+                })
+                .catch(function(err) {
                     res.status(500);
                     res.json(modeler.status.build(constants.status.ERROR, areaUpdate.areacode, constants.error_messages.AREA_404, areaUpdate.areacode));
-                }
-            });
+                });
         }
     }
 
     function areaDELETE(req, res) {
-        lib.getArea(req.params.areacode, function(area) {
-            if (area !== null) {
-                if (area.size > 0) {
-                    res.status(500);
-                    res.json(modeler.status.build(constants.status.ERROR, area.areacode, constants.error_messages.AREA_DELETE_500_SIZE));
+        lib.area.async.getArea(req.params.areacode)
+            .then(function(area) {
+                if (area !== null) {
+                    if (area.size > 0) {
+                        res.status(500);
+                        res.json(modeler.status.build(constants.status.ERROR, area.areacode, constants.error_messages.AREA_DELETE_500_SIZE));
+                    } else {
+                        lib.area.deleteArea(area.areacode);
+                        res.json(modeler.status.ok(area.areacode));
+                    }
                 } else {
-                    lib.deleteArea(area.areacode);
-                    res.json(modeler.status.ok(area.areacode));
+                    res.status(500);
+                    res.json(modeler.status.build(constants.status.ERROR, req.params.areacode, constants.error_messages.AREA_DELETE_500_BAD_AREACODE));
                 }
-            } else {
-                res.status(500);
-                res.json(modeler.status.build(constants.status.ERROR, req.params.areacode, constants.error_messages.AREA_DELETE_500_BAD_AREACODE));
-            }
-        });
+            });
     }
 
     return {

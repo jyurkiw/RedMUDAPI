@@ -29,16 +29,17 @@ var goblinValleyArea = {
 var errorObj404 = modeler.status.build(constants.status.ERROR, 'XXX', constants.error_messages.AREA_404, 'XXX');
 
 describe('Area API', function() {
-    describe('GET Areas', function() {
-        before(function(done) {
-            lib.setArea(koboldValleyArea.areacode, koboldValleyArea);
-            lib.setArea(goblinValleyArea.areacode, goblinValleyArea);
-            done();
-        });
+    before(function(done) {
+        client.flushall();
+        done();
+    });
 
-        after(function(done) {
-            client.flushall();
-            done();
+    describe('GET Areas', function() {
+        beforeEach(function() {
+            return Promise.all([
+                lib.area.async.createArea(koboldValleyArea.areacode, koboldValleyArea),
+                lib.area.async.createArea(goblinValleyArea.areacode, goblinValleyArea)
+            ]);
         });
 
         it('check areas', function(done) {
@@ -54,15 +55,9 @@ describe('Area API', function() {
     });
 
     describe('GET/PUT/DELETE Area', function() {
-        beforeEach(function(done) {
+        beforeEach(function() {
             client.flushall();
-            lib.setArea(koboldValleyArea.areacode, koboldValleyArea);
-            done();
-        });
-
-        after(function(done) {
-            client.flushall();
-            done();
+            return lib.area.async.createArea(koboldValleyArea.areacode, koboldValleyArea);
         });
 
         it('check the kobold valley', function(done) {
@@ -94,11 +89,6 @@ describe('Area API', function() {
             done();
         });
 
-        after(function(done) {
-            client.flushall();
-            done();
-        });
-
         it('check fully formed kobold valley', function(done) {
             chai.request(server)
                 .post('/api/area')
@@ -118,8 +108,8 @@ describe('Area API', function() {
                 .send(noDescKBV)
                 .end(function(err, res) {
                     res.should.have.status(200);
-
                     expect(res.body).to.deep.equal(noDescKBVWarn);
+
                     chai.request(server)
                         .get('/api/area/' + koboldValleyArea.areacode)
                         .end(function(err, res) {
@@ -130,6 +120,7 @@ describe('Area API', function() {
                         });
                 });
         });
+
 
         it('check kobold valley missing name', function(done) {
             var errorKBV = modeler.status.build(constants.status.ERROR, koboldValleyArea.areacode, constants.error_messages.AREA_POST_500);
@@ -172,7 +163,6 @@ describe('Area API', function() {
                     chai.request(server)
                         .get('/api/area/' + noSizeKbv.areacode)
                         .end(function(gerr, gres) {
-                            console.log(gres.body);
                             gres.should.have.status(200);
                             gres.body.should.be.a('object');
                             should.exist(gres.body.size);
@@ -187,12 +177,7 @@ describe('Area API', function() {
 
     describe('PUT Area', function() {
         beforeEach(function(done) {
-            lib.setArea(koboldValleyArea.areacode, koboldValleyArea);
-            done();
-        });
-
-        after(function(done) {
-            client.flushall();
+            lib.area.createArea(koboldValleyArea.areacode, koboldValleyArea);
             done();
         });
 
@@ -290,39 +275,36 @@ describe('Area API', function() {
         });
     });
 
+    // Delete area beforeEach logic moved into the tests
+    // because of a strange race condition.
+    // hincrby wasn't being executed after the beforeEach logic was completed even though beforeEach was
+    // being concluded with a done argument.
     describe('DELETE area', function() {
-        beforeEach(function(done) {
-            console.log('setting area');
-            lib.setArea(koboldValleyArea.areacode, koboldValleyArea);
-            done();
-        });
-
-        after(function(done) {
-            client.flushall();
-            done();
-        });
-
         it('check successful delete', function(done) {
-            chai.request(server)
-                .del('/api/area/' + koboldValleyArea.areacode)
-                .end(function(err, res) {
-                    res.should.have.status(200);
-                    res.body.should.be.a('object');
-                    expect(res.body).to.deep.equal(modeler.status.ok(koboldValleyArea.areacode));
-                    done();
-                });
-        });
-
-        it('check fail delete for area size > 0', function(done) {
-            client.hincrby('AREAS:' + koboldValleyArea.areacode, 'size', 5, function(herr, hres) {
+            lib.area.createArea(koboldValleyArea.areacode, koboldValleyArea, function(success) {
                 chai.request(server)
                     .del('/api/area/' + koboldValleyArea.areacode)
                     .end(function(err, res) {
-                        res.should.have.status(500);
+                        res.should.have.status(200);
                         res.body.should.be.a('object');
-                        expect(res.body).to.deep.equal(modeler.status.build(constants.status.ERROR, koboldValleyArea.areacode, constants.error_messages.AREA_DELETE_500_SIZE));
+                        expect(res.body).to.deep.equal(modeler.status.ok(koboldValleyArea.areacode));
                         done();
                     });
+            });
+        });
+
+        it('check fail delete for area size > 0', function(done) {
+            lib.area.createArea(koboldValleyArea.areacode, koboldValleyArea, function(success) {
+                client.hincrby('AREAS:' + koboldValleyArea.areacode, 'size', 5, function(herr, hres) {
+                    chai.request(server)
+                        .del('/api/area/' + koboldValleyArea.areacode)
+                        .end(function(err, res) {
+                            res.should.have.status(500);
+                            res.body.should.be.a('object');
+                            expect(res.body).to.deep.equal(modeler.status.build(constants.status.ERROR, koboldValleyArea.areacode, constants.error_messages.AREA_DELETE_500_SIZE));
+                            done();
+                        });
+                });
             });
         });
 
