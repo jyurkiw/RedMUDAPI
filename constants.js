@@ -19,7 +19,9 @@ function Constants() {
             AREA_CREATE_FAIL_UNKNOWN: "Area creation failed for an unknown reason.",
 
             AREA_DELETE_500_SIZE: "Area %s cannot be deleted while room count > 0.",
-            AREA_DELETE_500_BAD_AREACODE: "Area %s does not exist."
+            AREA_DELETE_500_BAD_AREACODE: "Area %s does not exist.",
+
+            ROOM_POST_500_EXIT: "Exit structure is required."
         },
         warning_messages: {
             AREA_POST_NO_DESC: "Area description not found."

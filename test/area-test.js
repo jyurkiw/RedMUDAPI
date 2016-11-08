@@ -4,8 +4,8 @@ var expect = chai.expect;
 var should = chai.should();
 var assert = require('assert');
 
-var client = require('redis').createClient();
-var lib = require('redmudlib')(client);
+var lib = require('redmudlib')();
+var client = lib.client.instance();
 
 var modeler = require('../models/modeler');
 var constants = require('../constants');
