@@ -21,7 +21,10 @@ function Constants() {
             AREA_DELETE_500_SIZE: "Area %s cannot be deleted while room count > 0.",
             AREA_DELETE_500_BAD_AREACODE: "Area %s does not exist.",
 
-            ROOM_POST_500_EXIT: "Exit structure is required."
+            ROOM_POST_500_EXIT: "Exit structure is required.",
+
+            ROOMS_POST_500_NOARG: "Rooms command structure expected and not found.",
+            ROOMS_POST_500_BADARG: "Rooms exit api requires roomA and roomB."
         },
         warning_messages: {
             AREA_POST_NO_DESC: "Area description not found."

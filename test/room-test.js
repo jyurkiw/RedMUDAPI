@@ -107,8 +107,8 @@ describe('Room API', function() {
         describe('Connecting...', function() {
             beforeEach(function() {
                 return Promise.all([
-                    lib.room.async.addRoom(westernOverlook.areacode, westernOverlook),
-                    lib.room.async.addRoom(goblinCaveEntrance.areacode, goblinCaveEntrance)
+                    lib.room.async.addRoom(westernOverlook.areacode, westernOverlook, true),
+                    lib.room.async.addRoom(goblinCaveEntrance.areacode, goblinCaveEntrance, true)
                 ]);
             });
 
@@ -138,11 +138,31 @@ describe('Room API', function() {
                             });
                     });
             });
-            /*
+
             it('...two rooms to each other', function(done) {
-                
+                chai.request(server)
+                    .post('/api/rooms/exits')
+                    .send({ roomA: wolExit, roomB: gcvExit })
+                    .end(function(err, res) {
+                        Promise.all([
+                                lib.room.async.getRoom(westernOverlook.areacode, westernOverlook.roomnumber),
+                                lib.room.async.getRoom(goblinCaveEntrance.areacode, goblinCaveEntrance.roomnumber)
+                            ])
+                            .then(function(rooms) {
+                                var overlook = rooms[0];
+                                var entrance = rooms[1];
+
+                                expect(overlook.exits).to.be.an('object');
+                                expect(overlook.exits[wolExit.command]).to.equal('RM:' + goblinCaveEntrance.areacode + ':' + goblinCaveEntrance.roomnumber);
+
+                                expect(entrance.exits).to.be.an('object');
+                                expect(entrance.exits[gcvExit.command]).to.equal('RM:' + westernOverlook.areacode + ':' + westernOverlook.roomnumber);
+
+                                done();
+                            });
+                    });
             });
-            */
+
         });
     });
 

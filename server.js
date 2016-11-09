@@ -29,7 +29,6 @@ app.use(function(req, res, next) {
 app.use(apiPreface, require('./routes/area-route'));
 app.use(apiPreface, require('./routes/areas-route'));
 app.use(apiPreface, require('./routes/room-route'));
-//app.use(apiPreface, require('./routes/rooms-route'));
 
 app.listen(port);
 console.log('server running...');

@@ -9,13 +9,18 @@ function RoomRoutes() {
     var express = require('express');
     var router = express.Router();
 
-    var controller = require('../controllers/room-controller');
+    var roomController = require('../controllers/room-controller');
+    var roomsController = require('../controllers/rooms-controller');
 
-    router.get('/room/:areacode/:roomnumber', controller.roomGET);
-    router.post('/room', controller.roomPOST);
-    router.post('/room/exit', controller.roomExitPOST);
-    router.put('/room/:areacode/:roomnumber', controller.roomPUT);
-    router.delete('/room/:areacode/:roomnumber', controller.roomDELETE);
+    // Room controller binding
+    router.get('/room/:areacode/:roomnumber', roomController.roomGET);
+    router.post('/room', roomController.roomPOST);
+    router.post('/room/exit', roomController.roomExitPOST);
+    router.put('/room/:areacode/:roomnumber', roomController.roomPUT);
+    router.delete('/room/:areacode/:roomnumber', roomController.roomDELETE);
+
+    // Rooms controller binding
+    router.post('/rooms/exits', roomsController.roomsExitsPOST);
 
     return router;
 }
