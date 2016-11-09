@@ -137,12 +137,34 @@ function roomController() {
             });
     }
 
+    function roomExitDELETE(req, res) {
+        var areacode = req.params.areacode;
+        var roomnumber = parseInt(req.params.roomnumber, 10);
+        var command = req.params.command;
+
+        if (areacode === null || isNaN(roomnumber) || command === null) {
+            res.status(500);
+            res.json(modeler.status.build(constants.status.ERROR, null, AREA_DELETE_EXIT_500_BAD_PARAM));
+            return;
+        }
+
+        lib.room.async.unsetConnection(command, lib.util.buildRoomCode(areacode, roomnumber))
+            .then(function() {
+                resolve();
+            })
+            .catch(function(err) {
+                res.status(500);
+                res.json(modeler.status.build(constants.status.ERROR, null, err));
+            });
+    }
+
     return {
         roomGET: roomGET,
         roomPOST: roomPOST,
         roomExitPOST: roomExitPOST,
         roomPUT: roomPUT,
-        roomDELETE: roomDELETE
+        roomDELETE: roomDELETE,
+        roomExitDELETE: roomExitDELETE
     };
 }
 

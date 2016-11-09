@@ -215,7 +215,10 @@ describe('Room API', function() {
     // DELETE
     describe('DELETE', function() {
         beforeEach(function() {
-            return lib.room.async.addRoom(westernOverlook.areacode, westernOverlook);
+            return Promise.all([
+                lib.room.async.addRoom(westernOverlook.areacode, westernOverlook),
+                lib.room.async.addRoom(goblinCaveEntrance.areacode, goblinCaveEntrance),
+            ]);
         });
 
         it('Delete a room from an area', function(done) {
@@ -228,6 +231,51 @@ describe('Room API', function() {
                             done();
                         });
                 });
+        });
+
+        describe('Exit...', function(done) {
+            beforeEach(function() {
+                return lib.room.async.setConnection('west', westernOverlook, goblinCaveEntrance)
+            });
+
+            it('Remove an exit from a room', function(done) {
+                chai.request(server)
+                    .del('/api/room/exit/' + westernOverlook.areacode + '/' + westernOverlook.roomnumber + '/' + 'west')
+                    .end(function(err, res) {
+                        lib.room.async.getRoom(westernOverlook.areacode, westernOverlook.roomnumber)
+                            .then(function(room) {
+                                expect(room).to.be.an('object');
+                                expect(room).to.not.equal(null);
+                                should.not.exist(room.exits);
+                                done();
+                            });
+                    });
+            });
+        });
+
+        describe('Exits...', function(done) {
+            beforeEach(function() {
+                return lib.room.async.connectRooms({ source: westernOverlook, command: 'west' }, { source: goblinCaveEntrance, command: 'east' });
+            });
+
+            it('Remove exits from both rooms', function(done) {
+                chai.request(server)
+                    .del('/api/rooms/exits/' + westernOverlook.areacode + '/' + westernOverlook.roomnumber + '/' + goblinCaveEntrance.areacode + '/' + goblinCaveEntrance.roomnumber)
+                    .end(function(err, res) {
+                        Promise.all([
+                                lib.room.async.getRoom(westernOverlook.areacode, westernOverlook.roomnumber),
+                                lib.room.async.getRoom(goblinCaveEntrance.areacode, goblinCaveEntrance.roomnumber)
+                            ])
+                            .then(function(rooms) {
+                                var overlook = rooms[0];
+                                var cave = rooms[1];
+
+                                should.not.exist(overlook.exits);
+                                should.not.exist(cave.exits);
+                                done();
+                            });
+                    });
+            });
         });
     });
 });

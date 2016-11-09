@@ -20,6 +20,7 @@ function Constants() {
 
             AREA_DELETE_500_SIZE: "Area %s cannot be deleted while room count > 0.",
             AREA_DELETE_500_BAD_AREACODE: "Area %s does not exist.",
+            AREA_DELETE_EXIT_500_BAD_PARAM: "Areacode, Roomnumber, and Command are required parameters.",
 
             ROOM_POST_500_EXIT: "Exit structure is required.",
 

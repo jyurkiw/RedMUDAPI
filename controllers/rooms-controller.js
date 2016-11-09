@@ -9,21 +9,14 @@ function roomsController() {
     var modeler = require('../models/modeler');
     var constants = require('../constants');
 
+    /**
+     * Post exits between two rooms.
+     * 
+     * @memberof rooms-controller
+     * @param {any} req Request object
+     * @param {any} res Response object
+     */
     function roomsExitsPOST(req, res) {
-        if (typeof(req.body) !== 'object') {
-            res.status(500);
-            res.json(modeler.status.build(constants.status.ERROR, null, constants.error_messages.ROOMS_POST_500_NOARG));
-            return;
-        } else if (typeof(req.body.roomA) !== 'object') {
-            res.status(500);
-            res.json(modeler.status.build(constants.status.ERROR, null, constants.error_messages.ROOMS_POST_500_BADARG));
-            return;
-        } else if (typeof(req.body.roomB) !== 'object') {
-            res.status(500);
-            res.json(modeler.status.build(constants.status.ERROR, null, constants.error_messages.ROOMS_POST_500_BADARG));
-            return;
-        }
-
         var roomA = req.body.roomA;
         var roomB = req.body.roomB;
 
@@ -37,8 +30,39 @@ function roomsController() {
             });
     }
 
+    /**
+     * Remove exits between two rooms.
+     * 
+     * @memberof rooms-controller
+     * @param {any} req Request object
+     * @param {any} res Response object
+     */
+    function roomsExitsDELETE(req, res) {
+        Promise.all([
+                lib.room.async.getRoom(req.params.areacodeA, parseInt(req.params.roomnumberA, 10)),
+                lib.room.async.getRoom(req.params.areacodeB, parseInt(req.params.roomnumberB, 10))
+            ])
+            .then(function(rooms) {
+                if (rooms.length == 2) {
+                    return lib.room.async.disconnectRooms(rooms[0], rooms[1]);
+                } else {
+                    res.status(500);
+                    res.json(modeler.status.build(constants.status.ERROR, null, rooms));
+                    return;
+                }
+            })
+            .then(function() {
+                res.json(modeler.status.ok());
+            })
+            .catch(function(err) {
+                res.status(500);
+                res.json(modeler.status.build(constants.status.ERROR, null, err));
+            });
+    }
+
     return {
-        roomsExitsPOST: roomsExitsPOST
+        roomsExitsPOST: roomsExitsPOST,
+        roomsExitsDELETE: roomsExitsDELETE
     };
 }
 

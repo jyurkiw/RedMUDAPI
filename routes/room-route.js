@@ -18,9 +18,11 @@ function RoomRoutes() {
     router.post('/room/exit', roomController.roomExitPOST);
     router.put('/room/:areacode/:roomnumber', roomController.roomPUT);
     router.delete('/room/:areacode/:roomnumber', roomController.roomDELETE);
+    router.delete('/room/exit/:areacode/:roomnumber/:command', roomController.roomExitDELETE);
 
     // Rooms controller binding
     router.post('/rooms/exits', roomsController.roomsExitsPOST);
+    router.delete('/rooms/exits/:areacodeA/:roomnumberA/:areacodeB/:roomnumberB', roomsController.roomsExitsDELETE);
 
     return router;
 }
