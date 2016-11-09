@@ -15,7 +15,7 @@ function areasController() {
      * or a 404 status and an areaError structure
      * containing the passed areacode.
      * 
-     * @memberOf area-controller
+     * @memberof area-controller
      * @param {any} req The request object. An areacode param is expected.
      * @param {any} res The response object.
      */

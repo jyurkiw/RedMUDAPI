@@ -3,6 +3,10 @@
     "version": "0.0.1",
     "description": "An API to expose the RedMUD through HTTP REST.",
     "main": "server.js",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/jyurkiw/RedMUDAPI.git"
+    },
     "scripts": {
         "start": "node server.js",
         "test": "./node_modules/.bin/mocha --trace-warnings --timeout 10000 --reporter spec",
