@@ -14,8 +14,8 @@ function roomController() {
      * Employs the following route /room/:areacode/:roomnumber
      * 
      * @memberof room-controller
-     * @param {any} req
-     * @param {any} res
+     * @param {any} req The request object.
+     * @param {any} res The response object.
      */
     function roomGET(req, res) {
         var areacode = req.params.areacode;
@@ -154,9 +154,8 @@ function roomController() {
      * Delete an exit from a room.
      * Employs the following route /room/exit/:areacode/:roomnumber/:command
      * 
-     * @param {any} req
-     * @param {any} res
-     * @returns
+     * @param {any} req The request object.
+     * @param {any} res The response object.
      */
     function roomExitDELETE(req, res) {
         var areacode = req.params.areacode;
