@@ -9,6 +9,14 @@ function roomController() {
     var modeler = require('../models/modeler');
     var constants = require('../constants');
 
+    /**
+     * GET method for room.
+     * Employs the following route /room/:areacode/:roomnumber
+     * 
+     * @memberof room-controller
+     * @param {any} req
+     * @param {any} res
+     */
     function roomGET(req, res) {
         var areacode = req.params.areacode;
         var roomnumber = parseInt(req.params.roomnumber, 10);
@@ -65,6 +73,7 @@ function roomController() {
      * }
      * </code></pre>
      * 
+     * @memberof room-controller
      * @param {any} req The request object.
      * @param {any} res The response object.
      */
@@ -91,7 +100,9 @@ function roomController() {
      * Scrubs any roomnumber or areacode data from the passed room data
      * because they are not updatable fields.
      * Scrubs any exits. Exits are updated with their own methods.
+     * Employs the following route /room/:areacode/:roomnumber
      * 
+     * @memberof room-controller
      * @param {any} req The request object.
      * @param {any} res The response object.
      */
@@ -119,7 +130,9 @@ function roomController() {
 
     /**
      * Delete a room from an area.
+     * Employs the following route /room/:areacode/:roomnumber
      * 
+     * @memberof room-controller
      * @param {any} req The request object.
      * @param {any} res The response object.
      */
@@ -137,6 +150,14 @@ function roomController() {
             });
     }
 
+    /**
+     * Delete an exit from a room.
+     * Employs the following route /room/exit/:areacode/:roomnumber/:command
+     * 
+     * @param {any} req
+     * @param {any} res
+     * @returns
+     */
     function roomExitDELETE(req, res) {
         var areacode = req.params.areacode;
         var roomnumber = parseInt(req.params.roomnumber, 10);
