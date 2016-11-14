@@ -171,17 +171,30 @@ describe('Room API', function() {
         beforeEach(function() {
             return lib.room.async.addRoom(westernOverlook.areacode, westernOverlook);
         });
-        /*
-                it('Get rooms for an area', function() {
-                    return new Promise(function(resolve, reject) {
-                        chai.request(server)
-                            .get('/api/rooms')
-                            .end(function(err, res) {
+        describe('Admin...', function() {
+            var lookupTableExpect = {};
+            beforeEach(function() {
+                lookupTableExpect['RM:' + goblinCaveEntrance.areacode + ':' + goblinCaveEntrance.roomnumber] = goblinCaveEntrance.name;
+                lookupTableExpect['RM:' + goblinCaveTunnel.areacode + ':' + goblinCaveTunnel.roomnumber] = goblinCaveTunnel.name;
 
-                            });
+                return Promise.all([
+                    lib.room.async.addRoom(goblinCaveEntrance.areacode, goblinCaveEntrance),
+                    lib.room.async.addRoom(goblinCaveTunnel.areacode, goblinCaveTunnel),
+                ]);
+            });
+
+            it('Get room lookup table for an area', function(done) {
+                chai.request(server)
+                    .get('/api/rooms/exits/lookup/' + goblinValleyArea.areacode)
+                    .end(function(err, res) {
+                        var lookupTable = res.body;
+
+                        expect(lookupTable).to.deep.equal(lookupTableExpect);
+                        done();
                     });
-                });
-        */
+            });
+        });
+
         it('Get a room in an area', function(done) {
             chai.request(server)
                 .get('/api/room/' + westernOverlook.areacode + '/' + westernOverlook.roomnumber)

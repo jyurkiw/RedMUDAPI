@@ -9,6 +9,15 @@ function roomsController() {
     var modeler = require('../models/modeler');
     var constants = require('../constants');
 
+    function adminRoomsInAreaGET(req, res) {
+        var areacode = req.params.areacode;
+
+        lib.admin.room.async.getRoomLookupTableByArea(areacode)
+            .then(function(lookupTable) {
+                res.json(lookupTable);
+            });
+    }
+
     /**
      * Post exits between two rooms.
      * 
@@ -61,6 +70,7 @@ function roomsController() {
     }
 
     return {
+        adminRoomsInAreaGET: adminRoomsInAreaGET,
         roomsExitsPOST: roomsExitsPOST,
         roomsExitsDELETE: roomsExitsDELETE
     };
