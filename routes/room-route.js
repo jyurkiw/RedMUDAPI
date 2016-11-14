@@ -21,6 +21,7 @@ function RoomRoutes() {
     router.delete('/room/exit/:areacode/:roomnumber/:command', roomController.roomExitDELETE);
 
     // Rooms controller binding
+    router.get('/rooms/exits/lookup/:areacode', roomsController.adminRoomsInAreaGET);
     router.post('/rooms/exits', roomsController.roomsExitsPOST);
     router.delete('/rooms/exits/:areacodeA/:roomnumberA/:areacodeB/:roomnumberB', roomsController.roomsExitsDELETE);
 
