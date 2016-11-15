@@ -173,10 +173,15 @@ describe('Room API', function() {
         });
         describe('Admin...', function() {
             var lookupTableExpect = {};
-            beforeEach(function() {
-                lookupTableExpect['RM:' + goblinCaveEntrance.areacode + ':' + goblinCaveEntrance.roomnumber] = goblinCaveEntrance.name;
-                lookupTableExpect['RM:' + goblinCaveTunnel.areacode + ':' + goblinCaveTunnel.roomnumber] = goblinCaveTunnel.name;
+            lookupTableExpect['RM:' + goblinCaveEntrance.areacode + ':' + goblinCaveEntrance.roomnumber] = goblinCaveEntrance.name;
+            lookupTableExpect['RM:' + goblinCaveTunnel.areacode + ':' + goblinCaveTunnel.roomnumber] = goblinCaveTunnel.name;
 
+            var fullLookupTableExpect = { KDV: {}, GCV: {} };
+            fullLookupTableExpect.KDV['RM:' + westernOverlook.areacode + ':' + westernOverlook.roomnumber] = westernOverlook.name;
+            fullLookupTableExpect.GCV['RM:' + goblinCaveEntrance.areacode + ':' + goblinCaveEntrance.roomnumber] = goblinCaveEntrance.name;
+            fullLookupTableExpect.GCV['RM:' + goblinCaveTunnel.areacode + ':' + goblinCaveTunnel.roomnumber] = goblinCaveTunnel.name;
+
+            beforeEach(function() {
                 return Promise.all([
                     lib.room.async.addRoom(goblinCaveEntrance.areacode, goblinCaveEntrance),
                     lib.room.async.addRoom(goblinCaveTunnel.areacode, goblinCaveTunnel),
@@ -190,6 +195,17 @@ describe('Room API', function() {
                         var lookupTable = res.body;
 
                         expect(lookupTable).to.deep.equal(lookupTableExpect);
+                        done();
+                    });
+            });
+
+            it('Get all rooms by area in a lookup table', function(done) {
+                chai.request(server)
+                    .get('/api/rooms/exits/lookup')
+                    .end(function(err, res) {
+                        var lookupTable = res.body;
+
+                        expect(lookupTable).to.deep.equal(fullLookupTableExpect);
                         done();
                     });
             });
