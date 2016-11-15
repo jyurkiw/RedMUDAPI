@@ -9,10 +9,31 @@ function roomsController() {
     var modeler = require('../models/modeler');
     var constants = require('../constants');
 
+    /**
+     * Get room names for an area in a lookup table.
+     * 
+     * @memberof rooms-controller
+     * @param {any} req The request object.
+     * @param {any} res The response object.
+     */
     function adminRoomsInAreaGET(req, res) {
         var areacode = req.params.areacode;
 
         lib.admin.room.async.getRoomLookupTableByArea(areacode)
+            .then(function(lookupTable) {
+                res.json(lookupTable);
+            });
+    }
+
+    /**
+     * Get all room names by area in a lookup table. 
+     * 
+     * @memberof rooms-controller
+     * @param {any} req
+     * @param {any} res
+     */
+    function adminRoomsByAreaGET(req, res) {
+        lib.admin.room.async.getAllRoomsLookupTable()
             .then(function(lookupTable) {
                 res.json(lookupTable);
             });
@@ -71,6 +92,7 @@ function roomsController() {
 
     return {
         adminRoomsInAreaGET: adminRoomsInAreaGET,
+        adminRoomsByAreaGET: adminRoomsByAreaGET,
         roomsExitsPOST: roomsExitsPOST,
         roomsExitsDELETE: roomsExitsDELETE
     };
