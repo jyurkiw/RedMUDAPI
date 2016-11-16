@@ -154,6 +154,7 @@ function roomController() {
      * Delete an exit from a room.
      * Employs the following route /room/exit/:areacode/:roomnumber/:command
      * 
+     * @memberof room-controller
      * @param {any} req The request object.
      * @param {any} res The response object.
      */
