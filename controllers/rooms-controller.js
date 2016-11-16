@@ -40,7 +40,20 @@ function roomsController() {
     }
 
     /**
-     * Post exits between two rooms.
+     * Post exits between two rooms.<br/>
+     * Expects body data with the following format: 
+     * <code><pre>
+     * {
+     *      roomA: {
+     *          source: {string|object},
+     *          command: {string}
+     *      },
+     *      roomB: {
+     *          source: {string|object},
+     *          command: {string}
+     *      }
+     * }
+     * </pre></code>
      * 
      * @memberof rooms-controller
      * @param {any} req Request object
