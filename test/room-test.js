@@ -173,13 +173,13 @@ describe('Room API', function() {
         });
         describe('Admin...', function() {
             var lookupTableExpect = {};
-            lookupTableExpect['RM:' + goblinCaveEntrance.areacode + ':' + goblinCaveEntrance.roomnumber] = goblinCaveEntrance.name;
-            lookupTableExpect['RM:' + goblinCaveTunnel.areacode + ':' + goblinCaveTunnel.roomnumber] = goblinCaveTunnel.name;
+            lookupTableExpect['RM:' + goblinCaveEntrance.areacode + ':' + goblinCaveEntrance.roomnumber] = goblinCaveEntrance.roomnumber + ': ' + goblinCaveEntrance.name;
+            lookupTableExpect['RM:' + goblinCaveTunnel.areacode + ':' + goblinCaveTunnel.roomnumber] = goblinCaveTunnel.roomnumber + ': ' + goblinCaveTunnel.name;
 
             var fullLookupTableExpect = { KDV: {}, GCV: {} };
-            fullLookupTableExpect.KDV['RM:' + westernOverlook.areacode + ':' + westernOverlook.roomnumber] = westernOverlook.name;
-            fullLookupTableExpect.GCV['RM:' + goblinCaveEntrance.areacode + ':' + goblinCaveEntrance.roomnumber] = goblinCaveEntrance.name;
-            fullLookupTableExpect.GCV['RM:' + goblinCaveTunnel.areacode + ':' + goblinCaveTunnel.roomnumber] = goblinCaveTunnel.name;
+            fullLookupTableExpect.KDV['RM:' + westernOverlook.areacode + ':' + westernOverlook.roomnumber] = westernOverlook.roomnumber + ': ' + westernOverlook.name;
+            fullLookupTableExpect.GCV['RM:' + goblinCaveEntrance.areacode + ':' + goblinCaveEntrance.roomnumber] = goblinCaveEntrance.roomnumber + ': ' + goblinCaveEntrance.name;
+            fullLookupTableExpect.GCV['RM:' + goblinCaveTunnel.areacode + ':' + goblinCaveTunnel.roomnumber] = goblinCaveTunnel.roomnumber + ': ' + goblinCaveTunnel.name;
 
             beforeEach(function() {
                 return Promise.all([

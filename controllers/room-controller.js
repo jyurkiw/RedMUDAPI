@@ -171,7 +171,7 @@ function roomController() {
 
         lib.room.async.unsetConnection(command, lib.util.buildRoomCode(areacode, roomnumber))
             .then(function() {
-                resolve();
+                res.json(modeler.status.ok());
             })
             .catch(function(err) {
                 res.status(500);
