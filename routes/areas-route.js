@@ -5,7 +5,7 @@
  * @namespace areas-route
  * @returns An areas router.
  */
-function AreaRoutes() {
+function AreasRoutes() {
     var express = require('express');
     var router = express.Router();
 
@@ -17,4 +17,4 @@ function AreaRoutes() {
     return router;
 }
 
-module.exports = AreaRoutes();
+module.exports = AreasRoutes();
