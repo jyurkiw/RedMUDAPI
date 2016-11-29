@@ -25,7 +25,9 @@ function Constants() {
             ROOM_POST_500_EXIT: "Exit structure is required.",
 
             ROOMS_POST_500_NOARG: "Rooms command structure expected and not found.",
-            ROOMS_POST_500_BADARG: "Rooms exit api requires roomA and roomB."
+            ROOMS_POST_500_BADARG: "Rooms exit api requires roomA and roomB.",
+
+            CHARACTER_POST_500: "Character creation failed."
         },
         warning_messages: {
             AREA_POST_NO_DESC: "Area description not found."
