@@ -30,6 +30,7 @@ app.use(apiPreface, require('./routes/area-route'));
 app.use(apiPreface, require('./routes/areas-route'));
 app.use(apiPreface, require('./routes/room-route'));
 app.use(apiPreface, require('./routes/user-route'));
+app.use(apiPreface, require('./routes/character-route'));
 
 app.listen(port);
 console.log('server running...');
